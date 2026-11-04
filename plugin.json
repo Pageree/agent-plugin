@@ -1,0 +1,15 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "pageree",
+  "version": "1.0.0",
+  "description": "Pageree lets your AI assistant publish landing pages that collect leads, then read how visitors behave and improve each page with you.",
+  "author": {
+    "name": "Pageree",
+    "email": "support@pageree.com",
+    "url": "https://pageree.com"
+  },
+  "homepage": "https://pageree.com",
+  "repository": "https://github.com/Pageree/agent-plugin",
+  "license": "MIT",
+  "keywords": ["landing page", "landing pages", "lead form", "lead capture", "pageree"]
+}

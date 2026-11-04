@@ -1,0 +1,21 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "pageree",
+  "displayName": "Pageree",
+  "version": "1.0.0",
+  "description": "Pageree lets your AI assistant publish landing pages that collect leads, then read how visitors behave and improve each page with you.",
+  "logo": "assets/logo.svg",
+  "author": {
+    "name": "Pageree",
+    "url": "https://pageree.com"
+  },
+  "homepage": "https://pageree.com",
+  "repository": "https://github.com/Pageree/agent-plugin",
+  "license": "MIT",
+  "keywords": ["landing-pages", "lead-capture", "forms", "analytics", "hosting", "mcp"],
+  "suggestedPrompts": [
+    "Build and publish a landing page for my business with a lead form",
+    "Send the leads from my landing page to my email",
+    "Show me how my landing page is doing and what to change"
+  ]
+}
