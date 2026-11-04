@@ -30,8 +30,10 @@ In the Powers panel, choose **Add Custom Power**, then **Import power from GitHu
 
 ```sh
 git clone https://github.com/Pageree/agent-plugin
-agy plugin install ./agent-plugin
+agy plugin install ./agent-plugin/antigravity
 ```
+
+To sign in, run `agy`, type `/mcp`, select `pageree` and choose **Authenticate**.
 
 ### Gemini CLI
 
@@ -74,7 +76,7 @@ Publishing makes a page public, so review the preview and confirm the destinatio
 | --- | --- |
 | `plugin.json`, `mcp.json` | Agent Plugins clients, such as Kiro and GitHub Copilot |
 | `.claude-plugin/`, `.mcp.json` | Claude Code and its marketplaces, and Grok Build |
-| `.antigravity-plugin/`, `mcp_config.json` | Antigravity |
+| `antigravity/` | Antigravity. Its own folder, because Antigravity's strict validation warns about other clients' files and its marketplace bundle takes only what is inside the plugin folder. It holds a second copy of the skill and the logo |
 | `gemini-extension.json` | Gemini CLI |
 | `skills/landing-page-guru-skill/` | The Landing Page Guru skill, copied unchanged from [Pageree/landing-page-guru-skill](https://github.com/Pageree/landing-page-guru-skill) at commit `f756e9a` (0.1.0) |
 | `assets/logo.svg` | Pageree logo |
