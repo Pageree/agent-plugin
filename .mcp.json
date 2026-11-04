@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "pageree": {
+      "type": "http",
+      "url": "https://mcp.pageree.com/"
+    }
+  }
+}

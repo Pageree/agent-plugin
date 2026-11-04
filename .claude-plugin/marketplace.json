@@ -1,0 +1,15 @@
+{
+  "name": "pageree",
+  "description": "Pageree lets your AI assistant publish landing pages that collect leads, then read how visitors behave and improve each page with you.",
+  "owner": {
+    "name": "Pageree",
+    "email": "support@pageree.com"
+  },
+  "plugins": [
+    {
+      "name": "pageree",
+      "source": "./",
+      "description": "Pageree lets your AI assistant publish landing pages that collect leads, then read how visitors behave and improve each page with you."
+    }
+  ]
+}

@@ -1,61 +1,56 @@
-# Pageree for Gemini CLI
+# Pageree agent plugin
 
 <img src="assets/logo.svg" alt="Pageree" width="64" height="64">
 
-Build and run landing pages from Gemini CLI. Pageree provides hosted previews, publishing, lead capture, and page analytics through a remote MCP connection.
+Pageree lets your AI assistant publish landing pages that collect leads, then read how visitors behave and improve each page with you.
 
-Connect Gemini CLI to Pageree using the extension below. Gallery discovery is tracked in [RELEASE.md](RELEASE.md).
+This plugin connects your assistant to Pageree's hosted server and adds the Landing Page Guru skill, which guides the offer, copy, design, forms and measurement of a page.
 
 ## Requirements
 
-- [Gemini CLI](https://geminicli.com/docs/get-started/installation/) installed and authenticated.
 - A [Pageree account](https://console.pageree.com/signup).
 - Internet access to `https://mcp.pageree.com/`.
 
-Pageree hosts the MCP service. There are no extension dependencies to install and no API key to copy. Pageree service usage is subject to your account plan.
+Pageree hosts the MCP service. There is no API key to copy. You sign in through your browser the first time your assistant connects. Pageree service usage is subject to your account plan.
 
 ## Install
 
-Run in your terminal:
+### Claude Code
 
 ```sh
-gemini extensions install https://github.com/Pageree/gemini-extension
+claude plugin marketplace add Pageree/agent-plugin
+claude plugin install pageree@pageree
+```
+
+### Kiro
+
+In the Powers panel, choose **Add Custom Power**, then **Import power from GitHub**, and enter `https://github.com/Pageree/agent-plugin`.
+
+### Antigravity
+
+```sh
+git clone https://github.com/Pageree/agent-plugin
+agy plugin install ./agent-plugin
+```
+
+### Gemini CLI
+
+```sh
+gemini extensions install https://github.com/Pageree/agent-plugin
 gemini extensions list
 ```
 
-### Install from a local checkout
-
-From this directory, run in your terminal:
-
-```sh
-gemini extensions install .
-```
-
-Review the installation prompt and confirm that the extension connects to `https://mcp.pageree.com/`. Restart any existing Gemini CLI session after installation, or start one with:
-
-```sh
-gemini
-```
-
-Inside the interactive Gemini CLI session:
-
-```text
-/extensions list
-/mcp list
-/mcp auth pageree
-```
-
-Sign in to Pageree in the browser and review the access request. Approve it if you want Gemini CLI to use Pageree on your behalf. Return to the terminal and run `/mcp list` to check the connection.
-
-The manifest uses `httpUrl` to select Streamable HTTP. Gemini discovers Pageree's OAuth settings automatically. The endpoint ends at `/`; do not append `/mcp` or `/sse`.
+Inside Gemini, run `/mcp auth pageree` and finish the browser sign-in. The manifest uses `httpUrl` to select Streamable HTTP. Details and testing are in [RELEASE.md](RELEASE.md).
 
 ## Verify the connection
 
-Ask Gemini:
+Ask your assistant:
 
 > Use Pageree to call whoami and list_pages. Do not create, change, or publish anything.
 
-Confirm that the account is correct and both calls succeed. A new account can have an empty page list. Restart Gemini and repeat the check to verify that the connection survives a new session.
+Confirm that the account is correct and both calls succeed. A new account can have an empty page list.
+
+The endpoint ends at `/`. Do not append `/mcp` or `/sse`.
 
 ## Example prompts
 
@@ -71,41 +66,29 @@ Confirm that the account is correct and both calls succeed. A new account can ha
 
 > Use Pageree to review my page's analytics and suggest improvements supported by the data. Wait for my approval before editing or publishing.
 
-Pageree delivers its page-building guidance through MCP tools. Publishing makes a page public, so review the preview and confirm the destination before asking the agent to publish.
-
-## Troubleshooting
-
-| Problem | Next step |
-| --- | --- |
-| `gemini` command is missing | Install Gemini CLI using its official installation guide above. |
-| Extension is missing | Run `gemini extensions list` in the terminal, check that `pageree` is enabled, and restart the interactive session. |
-| Authentication is required | Run `/mcp auth pageree` inside Gemini and finish the browser flow. |
-| Server uses unexpected settings | Check for an existing `mcpServers.pageree` entry in your Gemini settings; settings take precedence over extension configuration. Preserve unrelated servers. |
-| No connection | Check internet access and the exact root endpoint, then inspect `/mcp list` for the error. |
-
-## Remove the extension
-
-Exit Gemini, then run:
-
-```sh
-gemini extensions uninstall pageree
-```
-
-Removing the extension does not delete your hosted Pageree pages.
+Publishing makes a page public, so review the preview and confirm the destination before asking the agent to publish.
 
 ## Package contents
 
-- `gemini-extension.json` — extension metadata and hosted MCP connection.
-- `assets/logo.svg` — Pageree logo used in this README.
-- `RELEASE.md` — testing and gallery publication checklist.
+| Path | For |
+| --- | --- |
+| `plugin.json`, `mcp.json` | Agent Plugins clients, such as Kiro and GitHub Copilot |
+| `.claude-plugin/`, `.mcp.json` | Claude Code and its marketplaces, and Grok Build |
+| `.antigravity-plugin/`, `mcp_config.json` | Antigravity |
+| `gemini-extension.json` | Gemini CLI |
+| `skills/landing-page-guru-skill/` | The Landing Page Guru skill, copied unchanged from [Pageree/landing-page-guru-skill](https://github.com/Pageree/landing-page-guru-skill) at commit `f756e9a` (0.1.0) |
+| `assets/logo.svg` | Pageree logo |
+| `RELEASE.md` | Gemini CLI testing and gallery checklist |
 
-This package contains no executable hooks, server runtime, or credentials. Tool requests go to the hosted Pageree service. Gemini manages OAuth credentials outside this package.
+The skill includes optional local helper scripts for testing form flows and event data. This package contains no hooks, server runtime or credentials. Tool requests go to the hosted Pageree service, and your assistant's client manages the sign-in.
 
 ## Links
 
-- [Pageree setup documentation](https://pageree.com/docs#gemini-cli)
+- [Pageree setup documentation](https://pageree.com/docs)
 - [Pageree dashboard](https://console.pageree.com/)
 - [Privacy](https://pageree.com/privacy) · [Terms](https://pageree.com/terms)
-- [Gemini extension reference](https://geminicli.com/docs/extensions/reference/)
-- [Gemini MCP authentication](https://geminicli.com/docs/tools/mcp-server/)
 - Support: [support@pageree.com](mailto:support@pageree.com)
+
+## License
+
+MIT. See [LICENSE](LICENSE).
