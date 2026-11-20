@@ -1,10 +1,24 @@
+import { isIP } from 'node:net';
 import { addCheck, isMain, loadContract, parseArgs, readJSON, reportFor, writeReport } from './lib/common.mjs';
 
 const states = new Set(['granted', 'denied', 'withdrawn', 'not-required']);
 const kinds = new Set(['form-submit', 'cta-click', 'page-view']);
 const outcomes = new Set(['accepted', 'rejected', 'timeout', 'duplicate', 'invalid', 'none']);
 const opaque = value => typeof value === 'string' && /^[a-zA-Z0-9_-]{1,100}$/.test(value);
-const personal = value => /@|bearer\s|https?:\/\/|(?:\+?\d[\s().-]*){9,}/i.test(String(value));
+// Any run of address characters is a candidate, so brackets, a zone, a port or a
+// final full stop around an address cannot hide it: (10.0.0.1), [::1]:8080,
+// fe80::1%eth0, 10.0.0.1:8080, "from 10.0.0.1.". Node's parser has the last word,
+// so 12:34:56:78, 999.1.2.3 and 1.2.3.4.5 stay plain values.
+const ipv4Inside = /(?<![\d.])\d{1,3}(?:\.\d{1,3}){3}(?![\d.])/g;
+const containsIP = value => (String(value).match(/[\da-f.:]+/gi) ?? []).some(run => {
+  const bare = run.replace(/^\.+|\.+$/g, '');
+  return isIP(bare) !== 0 || (bare.match(ipv4Inside) ?? []).some(part => isIP(part) !== 0);
+});
+const personal = value => [
+  /@|bearer\s|https?:\/\/|(?:\+?\d[\s().-]*){9,}/i,
+  /\b(?:sk|pk|rk)[_-][a-zA-Z0-9]{4,}/, // provider keys; case-sensitive so SK-2024 stays a SKU
+  /\b(?:sess|session|api_?key)[_-][a-z0-9]{4,}|[a-z0-9]{32,}/i // session IDs and long tokens
+].some(pattern => pattern.test(String(value))) || containsIP(value);
 
 function permitted(definition, action, contract) {
   return definition.permission === 'none' || !contract.privacy.analyticsRequiresPermission || action.permission === 'granted';
@@ -19,6 +33,7 @@ function matches(definition, action) {
 export function validateEvents(contract, trace) {
   const report = reportFor(contract, 'validate-events', 'supplied-trace');
   report.limitations.push('Checks only the supplied trace. It does not establish live collection, storage, attribution, or causal conversion lift.');
+  report.limitations.push('Personal-data detection is pattern-based and cannot recognize free text such as a postal address, so allowlist only non-personal properties.');
   if (!trace || trace.schemaVersion !== '1.0' || trace.pageId !== contract.pageId || trace.environment !== contract.environment || !['synthetic', 'browser-observed'].includes(trace.source) || !Array.isArray(trace.actions) || !Array.isArray(trace.events)) {
     addCheck(report, 'trace-shape', false, 'Versioned trace matching the contract and declared source', 'Missing or inconsistent trace metadata');
     return report;
