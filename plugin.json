@@ -11,5 +11,29 @@
   "homepage": "https://pageree.com",
   "repository": "https://github.com/Pageree/agent-plugin",
   "license": "MIT",
-  "keywords": ["landing page", "landing pages", "lead form", "lead capture", "pageree"]
+  "keywords": ["landing page", "landing pages", "lead form", "lead capture", "pageree"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Pageree",
+        "shortDescription": "Publish pages, collect leads",
+        "longDescription": "Pageree lets your assistant take a page all the way to a result: live on a real URL, collecting leads, and improving from how visitors behave.\n\nDescribe the offer and the assistant builds the page, shows you a private preview, and publishes it when you approve. Forms are validated, spam is held back, every lead is kept, and each one is delivered to your email, a webhook or your CRM. Connect your own domain and the certificate is handled for you.\n\nOnce visitors arrive, ask how the page is doing. The assistant reads traffic, sources and section-by-section behaviour, makes one focused change, republishes, and compares the versions. Every publish is a version you can roll back.",
+        "developerName": "Pageree",
+        "category": "Business & Operations",
+        "capabilities": ["MCP", "Skills"],
+        "websiteURL": "https://pageree.com/",
+        "supportURL": "https://pageree.com/support/",
+        "privacyPolicyURL": "https://pageree.com/privacy/",
+        "termsOfServiceURL": "https://pageree.com/terms/",
+        "defaultPrompt": [
+          "Build a landing page for my bakery's wedding-cake tastings, with a form that sends each booking request to my email.",
+          "How is my landing page doing this week, and what should I change?",
+          "My page gets visitors but nobody signs up. Look at the analytics and fix the weakest part."
+        ],
+        "brandColor": "#693BDA",
+        "composerIcon": "./assets/logo.svg",
+        "logo": "./assets/logo.svg"
+      }
+    }
+  }
 }
